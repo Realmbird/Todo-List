@@ -1,0 +1,24 @@
+h1, h2, h3 {
+    /* src/fonts/Poppins-Black.ttf */
+}
+
+p {
+    /* OpenSans-Italic-VariableFont_wdth,wght.ttf */
+
+}
+
+button {
+    /* Pacifico-Regular.ttf */
+}
+table {
+    background-color: var(--leaf-green);
+}
+
+:root {
+    --sky-blue: #7BC8F6;
+    --leaf-green: #76B947;
+    --sunset-orange: #F2A65A;
+    --white: #FFFFFF;
+    --twig-brown: #8B572A;
+    --robin-blue: #1FCECB;
+}
