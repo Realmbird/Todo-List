@@ -28,6 +28,7 @@ const DOMController = (() => {
     }
     const initialSetup = () => {
         //inital setup code for todo
+        //new todo("Todolist", "Completing Todo", new Date(), true)
         const my_project = new project("My Project", [new todo("Todolist", "Completing Todo", new Date(), true)]);
         project_list.push(my_project)
 
@@ -64,8 +65,9 @@ const DOMController = (() => {
         modifybtns.append(taskDelete)
         taskItem.append(modifybtns)
     }
-    const projectEditForm = (dropdown) => {
+    const projectEditForm = (dropdown, id) => {
         const form = document.createElement('form')
+        form.setAttribute("id", `project-${id}`)
         dropdown.append(form)
 
         //title, description, duedate, priority
@@ -92,8 +94,10 @@ const DOMController = (() => {
         submitbtn.textContent = "Submit"
         buttons.append(submitbtn)
     }
-    const todoEditForm = (dropdown) => {
+    const todoEditForm = (dropdown, id) => {
         const form = document.createElement('form')
+        form.setAttribute("id", `todo-${id}`)
+        form.classList.add("todo_form")
         dropdown.append(form)
 
         //title, description, duedate, priority
@@ -247,8 +251,39 @@ const DOMController = (() => {
             })
 
             // adds dropdown content
-           todoEditForm(dropdownContent)
-           projectEditForm(projectEditContent)
+            const tasklist = project.tasklist
+            tasklist.forEach((task, i) => {
+                const todo_item = document.createElement('div')
+                dropdownContent.append(todo_item)
+                todo_item.setAttribute("id", `${i}`)
+                todo_item.classList.add('tododropdown')
+                //title, description, duedate, priority
+
+                const title = document.createElement('h3')
+                title.textContent = task.title
+
+                todo_item.append(title)
+
+                const description = document.createElement('p')
+                description.textContent = task.description
+                todo_item.append(description)
+
+                const time = document.createElement('p')
+                console.log(task)
+                time.textContent = `Due Date: ${task.duedate.toDateString()}`
+                todo_item.append(time)
+
+                const priority = task.priority
+                if (priority) {
+                    const needed = document.createElement('p')
+                    needed.textContent = "High Priority"
+                    todo_item.append(needed)
+                }
+
+                todoEditForm(todo_item, i)
+            })
+           // todoEditForm(dropdownContent, index)
+           projectEditForm(projectEditContent, index)
             
 
         });
@@ -259,11 +294,14 @@ const DOMController = (() => {
     const addProject = () => {
         console.log("Added Project")
         let title = document.querySelector('#name')
+        console.log(`Name value: ${title.value}`)
         let new_project = new project(title.value, []);
-        
         project_list.push(new_project)
         
         load()
+    }
+    const addTodo = () => {
+        
     }
 
     return {load, initialSetup, change_project, addProject}
@@ -272,11 +310,11 @@ DOMController.initialSetup()
 
 
 
-const dialogbtn = () => {
-    const dialog = document.querySelector("dialog")
+const projectdialog = () => {
+    const dialog = document.querySelector(".project")
     const addtask = document.querySelector("#new_project")
-    const closebtn = document.querySelector("dialog .close")
-    const submitbtn = document.querySelector(".submit")
+    const closebtn = document.querySelector(".project .close")
+    const submitbtn = document.querySelector(".project .submit")
 
     addtask.addEventListener("click", () => {
         dialog.showModal();
@@ -291,14 +329,52 @@ const dialogbtn = () => {
         DOMController.addProject()
     })
 }
-const todoitembtns = () => {
+const tododialog = () => {
+    const dialog = document.querySelector(".new_todo")
+    const addtask = document.querySelector("#new_todo")
+    const closebtn = document.querySelector(".new_todo .close")
+    const submitbtn = document.querySelector(".new_todo .submit")
 
+    addtask.addEventListener("click", () => {
+        dialog.showModal();
+    });
+    closebtn.addEventListener("click", () => {
+        dialog.close();
+    })
+
+    submitbtn.addEventListener("click", (event) => {
+        dialog.close()
+        event.preventDefault()
+        
+    })
+}
+const todoitembtns = () => {
+    const todos = document.querySelectorAll('.tododropdown')
+    todos.forEach((todo) => {
+        todo.addEventListener("click", (event) => {
+            let target = event.target
+           
+            let id = `todo-${target.id}`
+            
+            let t = document.querySelector(`#${id}`)
+            if(t == null){
+                target = event.target.parentNode
+           
+                id = `todo-${target.id}`
+                t = document.querySelector(`#${id}`)
+            }
+
+            t.classList.toggle('show')
+        })
+    })
 }
 
 
 const dialogController = (() => {
-    // adds event buttons
-    dialogbtn()
+    // adds dialog event listener for project
+    projectdialog()
+    // adds event listener for todod
+    tododialog()
     todoitembtns()
 })()
 
