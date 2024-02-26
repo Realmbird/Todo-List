@@ -39,7 +39,7 @@
     <button id = "new_todo">Add Todo</button>
 
     
-    <dialog>
+    <dialog class = "project">
         <button class = "close">
             <span>x</span>
         </button>
@@ -48,6 +48,29 @@
         <form action = "https://httpbin.org/post" method="post">
             <label for="name">Name:</label>
             <input type="text" id="name" name = "name">
+            <button type="submit" class = "submit">Submit</button>
+          </form>
+    </dialog>
+    <dialog class = "new_todo">
+        <button class = "close">
+            <span>x</span>
+        </button>
+        <h1>Create new Project!</h1>
+        <!-- name, tasklist -->
+        <form action = "https://httpbin.org/post" method="post">
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title">
+            <label for="description">Description: </label>
+            <input type="text" id="description" name="description">
+            <label for="due_date">Due Date: </label>
+            <input type="date" id="due_date" name="due_date">
+
+            <div>
+                <label for="priority">Priority: </label>
+                <input type="checkbox" id="priority" name="priority">
+            </div>
+            
+            
             <button type="submit" class = "submit">Submit</button>
           </form>
     </dialog>
